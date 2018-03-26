@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="cache-control" content="no-cache" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/index.css">
+    <link href="https://cdn.jsdelivr.net/npm/jquery.fancytree@2.27/dist/skin-win8/ui.fancytree.min.css" rel="stylesheet">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico?v=<?php echo time() ?>" />            
+    <title>Solve The Street | Poker Hand Analysis </title>
+  </head>
+  <body>
+      <div class="container-fluid" id="container">
+        <div class="row">
+          <div class="col-sm">
+            <div class="dead-cards-container">
+              <div class="form-row">
+                <input class="form-control col-md-6" type="text" placeholder="Enter dead cards, for example Ah,As,2c" id="dead_card_input">
+                <button type="button" id="random_dead" class="col-md-2 btn control-btn btn-secondary">Random</button>
+              </div>
+              <img src="img/cards/back.png" id="flop1">
+              <img src="img/cards/back.png" id="flop2">
+              <img src="img/cards/back.png" id="flop3">
+              <img src="img/cards/back.png" id="turn">
+              <img src="img/cards/back.png" id="river">                            
+            </div>
+            <form class="range_assignment">
+              <div class="form-row">
+                <select class="range-assign form-control" id="assign_target">
+                  <option data-range="remove">REMOVE</option>                  
+                  <option data-range="fold">FOLD / CHECK</option>                
+                  <option data-range="call">CALL</option>
+                  <option data-range="bluff">BLUFF</option>
+                  <option data-range="raise">VALUE BET / RAISE</option>                  
+                </select>
+                <button id="assign_button" type="button" class="btn btn-success control-btn">Assign</button>
+                <button id="load_button" type="button" class="btn btn-info control-btn btn-control">Ranges</button>
+              </div>
+
+              <div class="form-row">
+                <button id="reset_selection_button" type="button" class="btn btn-primary control-btn btn-control">Clear Selection</button>
+                <button id="reset_suit_button" type="button" class="btn btn-danger control-btn btn-control">Clear Suits</button>
+                <button id="suit_selection_button" type="button" class="btn btn-primary control-btn btn-control">Split Suit</button>
+              </div>
+            </form>
+
+            <table class="table legend-table">
+              <tr>
+                <td><button type="button" class="btn" style="background-color: #7f7f7b"></button> = FOLD or CHECK <span class="stat fold-stat"></span></td>
+                <td><button type="button" class="btn" style="background-color: #238a0a"></button> = CALL <span class="stat call-stat"></span></td>
+              </tr>
+              <tr>
+                <td><button type="button" class="btn" style="background-color: #f94f58"></button> = BLUFF <span class="stat bluff-stat"></span></td>
+                <td><button type="button" class="btn" style="background-color: #c11111"></button> = VALUE BET / RAISE <span class="stat raise-stat"></span></td>
+              </tr>
+            </table>
+
+            <a class="btn btn-primary" data-toggle="collapse" href="#persistent_div" role="button" aria-expanded="false" aria-controls="collapseExample">
+              Export/Import Data to computer
+            </a>
+            <div id="persistent_div" class="collapse">
+              <div class="custom-file" id="export_location" lang="es">
+                <input type="file" class="custom-file-input" id="export_file" aria-describedby="fileHelp">
+                <label class="custom-file-label" for="export_file" id="file_browser_text">
+                  Export data to to file...
+                </label>
+              </div>
+              <div>
+                <button id="import_btn" class="btn btn-info btn-persist">Import</button>
+                <button id="download_btn" class="btn btn-info btn-persist">Download</button>
+              </div>
+            </div>
+          </div>            
+          <div class="col-sm">
+            <table id="range_matrix">
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!----------------------------------------- Suit Split Modal/Templates ---------------------------------------------->
+
+      <div class="modal fade" id="split_suit_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Split Suit ♠ <span style="color: red">♥</span> ♣ <span style="color: red">♦</span></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="save_suit">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <template id="pair_split_suit" data-selected="">
+        <div class="suit-combo" data-suit="cd"><span class="suit">♣</span><span class="suit" style="color: red">♦</span></div>
+        <div class="suit-combo" data-suit="ch"><span class="suit">♣</span><span class="suit" style="color: red">♥</span></div>
+        <div class="suit-combo" data-suit="cs"><span class="suit">♣</span><span class="suit">♠</span></div>
+        <div class="suit-combo" data-suit="dh"><span class="suit" style="color: red">♦</span><span class="suit" style="color: red">♥</span></div>
+        <div class="suit-combo" data-suit="ds"><span class="suit" style="color: red">♦</span><span class="suit">♠</span></div>
+        <div class="suit-combo" data-suit="hs"><span class="suit" style="color: red">♥</span><span class="suit">♠</span></div>
+      </template>
+
+      <template id="offsuit_split_suit" data-selected="">
+        <div class="suit-combo" data-suit="cd"><span class="suit">♣</span><span class="suit" style="color: red">♦</span></div>
+        <div class="suit-combo" data-suit="ch"><span class="suit">♣</span><span class="suit" style="color: red">♥</span></div>
+        <div class="suit-combo" data-suit="cs"><span class="suit">♣</span><span class="suit">♠</span></div>
+        <div class="suit-combo" data-suit="dc"><span class="suit" style="color: red">♦</span><span class="suit">♣</span></div>
+        <div class="suit-combo" data-suit="dh"><span class="suit" style="color: red">♦</span><span class="suit" style="color: red">♥</span></div>
+        <div class="suit-combo" data-suit="ds"><span class="suit" style="color: red">♦</span><span class="suit">♠</span></div>
+        <div class="suit-combo" data-suit="hc"><span class="suit" style="color: red">♥</span><span class="suit">♣</span></div>
+        <div class="suit-combo" data-suit="hd"><span class="suit" style="color: red">♥</span><span class="suit" style="color: red">♦</span></div>
+        <div class="suit-combo" data-suit="hs"><span class="suit" style="color: red">♥</span><span class="suit">♠</span></div>
+        <div class="suit-combo" data-suit="sc"><span class="suit">♠</span><span class="suit">♣</span></div>
+        <div class="suit-combo" data-suit="sd"><span class="suit">♠</span><span class="suit" style="color: red">♦</span></div>
+        <div class="suit-combo" data-suit="sh"><span class="suit">♠</span><span class="suit" style="color: red">♥</span></div>
+      </template>
+      
+      <template id="suited_split_suit" data-selected="">
+        <div class="suit-combo" data-suit="ss">
+          <span class="suit">♠</span>  <span class="suit">♠</span>
+        </div>
+        <div class="suit-combo" data-suit="hh">
+          <span class="suit" style="color: red">♥</span> <span class="suit" style="color: red">♥</span>
+        </div>
+        <div class="suit-combo" data-suit="cc">
+          <span class="suit">♣</span> <span class="suit">♣</span>
+        </div>
+        <div class="suit-combo" data-suit="dd">
+          <span class="suit" style="color: red">♦</span> <span class="suit" style="color: red">♦</span>
+        </div>
+      </template>
+
+      <!----------------------------------------- Load/Save Modal ---------------------------------------------->
+
+      <div class="modal fade" id="load_save_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Load / Save Ranges</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div id="treeview"></div>
+            </div>
+            <div class="modal-footer">
+              <button id="btn_load_range" type="button" class="btn btn-success">Load Range</button>                            
+              <input class="form-control" placeholder="Enter name of folder or range" id="range_name">
+              <button id="btn_add_folder" type="button" class="btn btn-primary">Add Folder</button>
+              <button id="btn_save_tree" type="button" class="btn btn-primary" id="save_suit">Save Range</button>
+              <button id="btn_delete_node" type="button" class="btn btn-danger" data-toggle="confirmation">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>      
+      <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+      <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>      
+      <script src="js/sprintf.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/jquery.fancytree@2.27/dist/jquery.fancytree-all-deps.min.js"></script>
+      <script src="js/lib/jquery.fancytree.dnd.js"></script>
+      <script src="js/assign_range.js"></script>
+      <script src="js/dead_card.js"></script>
+      <script src="js/split_suit.js"></script>
+      <script src="js/range_matrix.js"></script>
+      <script src="js/save_load.js"></script>
+      <script src="js/persist.js"></script>            
+      <script src="js/index.js"></script>      
+  </body>
+</html>

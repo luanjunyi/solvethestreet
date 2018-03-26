@@ -1,0 +1,126 @@
+#container {
+    margin-top: 10px;
+}
+
+/**************************** Range Matrix ******************************/
+
+#range_matrix {
+    border-collapse: collapse;
+ }
+
+#range_matrix, td {
+    border: 1px solid #cdcdcd;
+    padding: 8px;
+    position: relative;
+}
+
+td.selected-hand {
+    color: #5cc3e4;
+}
+
+.combo-num {
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    font-size: 12px;
+}
+
+td.call-range {
+    background-color: #238a0a;
+}
+
+td.raise-range {
+    background-color: #c11111;
+}
+
+td.fold-range {
+    background-color: #7f7f7b;
+}
+
+td.bluff-range {
+    background-color: #f94f58;
+}
+
+/***************************** Control ******************************/
+
+table.legend-table td {
+    border: none;
+}
+
+span.stat {
+    margin-left: 5px;
+}
+
+.form-row {
+    margin-bottom: 10px;
+}
+
+button.control-btn {
+    margin-right: 5px;
+}
+
+.range_assignment {
+    margin-top: 5px;
+}
+
+select.range-assign {
+    width: 200px;
+    margin-right: 10px;
+}
+
+div.load_save_modal {
+    width: 500px;
+}
+
+
+/*************************** Dead Cards *******************************/
+
+#dead_card_input {
+    margin-bottom: 10px;
+}
+
+#turn {
+    margin-left: 15px;
+}
+
+#random_dead {
+    height: 37px;
+    margin-left: 5px;
+}
+
+/************************* Split Suit *********************************/
+div.suit-combo {
+    display: inline-block;
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid #cdcdcd;
+    margin-bottom: 5px;
+    width: 80px;
+}
+
+.btn-control {
+    width: 130px;
+}
+
+span.suit {
+    font-size: 45px;
+}
+
+div.selected-suit {
+    background-color: #1da326;
+}
+
+/*************** Export / Import ***************/
+#export_location {
+    margin-bottom: 5px;
+    width: 500px;
+}
+
+.btn-persist {
+    width: 150px;
+}
+
+.hidden {
+    display: none;
+}
+
