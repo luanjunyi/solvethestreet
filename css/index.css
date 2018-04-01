@@ -72,6 +72,10 @@ div.load_save_modal {
     width: 500px;
 }
 
+.range_checkbox {
+    margin-right: 10px;
+}
+
 
 /*************************** Dead Cards *******************************/
 
@@ -119,8 +123,3 @@ div.selected-suit {
 .btn-persist {
     width: 150px;
 }
-
-.hidden {
-    display: none;
-}
-

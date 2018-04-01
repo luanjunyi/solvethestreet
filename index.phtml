@@ -1,11 +1,19 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-16976673-5"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-16976673-5');
+    </script>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="cache-control" content="no-cache" />
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="css/index.css">
@@ -51,12 +59,12 @@
 
             <table class="table legend-table">
               <tr>
-                <td><button type="button" class="btn" style="background-color: #7f7f7b"></button> = FOLD or CHECK <span class="stat fold-stat"></span></td>
-                <td><button type="button" class="btn" style="background-color: #238a0a"></button> = CALL <span class="stat call-stat"></span></td>
+                <td><input type="checkbox" class="range_checkbox" data-range="fold"><button type="button" class="btn" style="background-color: #7f7f7b"></button> = FOLD or CHECK <span class="stat fold-stat"></span></td>
+                <td><input type="checkbox" class="range_checkbox" data-range="call"><button type="button" class="btn" style="background-color: #238a0a"></button> = CALL <span class="stat call-stat"></span></td>
               </tr>
               <tr>
-                <td><button type="button" class="btn" style="background-color: #f94f58"></button> = BLUFF <span class="stat bluff-stat"></span></td>
-                <td><button type="button" class="btn" style="background-color: #c11111"></button> = VALUE BET / RAISE <span class="stat raise-stat"></span></td>
+                <td><input type="checkbox" class="range_checkbox" data-range="bluff"><button type="button" class="btn" style="background-color: #f94f58"></button> = BLUFF <span class="stat bluff-stat"></span></td>
+                <td><input type="checkbox" class="range_checkbox" data-range="raise"><button type="button" class="btn" style="background-color: #c11111"></button> = VALUE BET / RAISE <span class="stat raise-stat"></span></td>
               </tr>
             </table>
 

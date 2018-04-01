@@ -79,6 +79,38 @@ function update_stats() {
   $raise.text(sprintf("%d(%.1f%%)", g_raise_combos.size,  100.0 * g_raise_combos.size / total_comobs));
 }
 
+function range_to_selection() {
+  var range = $(this).data('range');
+  var cur_range = null;
+  if (range == 'fold') {
+    cur_range = g_fold_range;
+  } else if (range == 'call') {
+    cur_range = g_call_range;
+  } else if (range == 'bluff') {
+    cur_range = g_bluff_range;
+  } else if (range == 'raise') {
+    cur_range = g_raise_range;
+  } else {
+    alert('unknown range: ' + range);
+  }
+
+  if ($(this).is(":checked")) {
+    g_selected_hands = new Set([...g_selected_hands, ...cur_range]);
+    for (var hand of g_selected_hands) {
+      var $td = g_hand_to_td[hand];
+      $td.addClass('selected-hand');
+    }
+  } else {
+    g_selected_hands = new Set([...g_selected_hands].filter(x => !cur_range.has(x)));
+    for (var hand of cur_range) {
+      var $td = g_hand_to_td[hand];
+      $td.removeClass('selected-hand');
+    }
+  }
+
+  update_combos(g_selected_hands, g_selected_combos);
+}
+
 /**************************** Driver ******************************/
 
 $(function() {
@@ -116,6 +148,7 @@ $(function() {
   $("#btn_save_tree").click(add_range);
   $("#btn_load_range").click(load_range);
   $("#reset_selection_button").click(clear_selected_hands);
+  $("input.range_checkbox").click(range_to_selection);
   load_treeview();
 
   // bind persistent events
