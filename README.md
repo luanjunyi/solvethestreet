@@ -1,6 +1,6 @@
 # Introduction
 
-The tool is available for free at http://solvethestreet.com/.
+The tool is available for free at http://greenswan.pro/poker-range/.
 
 This is the tool for NLTH players who actually understand GTO style and know how to improve the game using the theory. Yes, most players know about GTO but don't know exactly how to apply it. I'll write some posts explaining it in the future(maybe), but it's beyond the scope here.
 
